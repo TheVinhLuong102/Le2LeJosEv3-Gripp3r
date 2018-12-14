@@ -23,11 +23,11 @@ public class MoveSteering {
 	// private static final Logger log =
 	// Logger.getLogger(MoveSteering.class.getName());
 
-	private Port leftMotorPort;
-	private Port rightMotorPort;
+	private Port leftMotorPort = null;
+	private Port rightMotorPort = null;
 
-	private UnregulatedMotor leftMotor;
-	private UnregulatedMotor rightMotor;
+	private UnregulatedMotor leftMotor = null;
+	private UnregulatedMotor rightMotor = null;
 
 	/**
 	 * Constructor.
@@ -41,17 +41,22 @@ public class MoveSteering {
 		// instantiate the motor objects
 		leftMotor = new UnregulatedMotor(this.leftMotorPort);
 		rightMotor = new UnregulatedMotor(this.rightMotorPort);
-		// handle resources correctly before exiting
-		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-			public void run() {
-				// stop the motors and wait until done
-				leftMotor.stop();
-				rightMotor.stop();
-				// close resources
-				leftMotor.close();
-				rightMotor.close();
-			}
-		}));
+		if ((leftMotor != null) || (rightMotor != null)) {
+			// handle resources correctly before exiting
+			Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+				public void run() {
+					// stop the motors and wait until done, then close resources
+					if (leftMotor != null) {
+						leftMotor.stop();
+						leftMotor.close();
+					}
+					if (rightMotor != null) {
+						rightMotor.stop();
+						rightMotor.close();
+					}
+				}
+			}));
+		}
 	}
 
 	/**
@@ -143,42 +148,45 @@ public class MoveSteering {
 			boolean lal = (leftMotor.getPower() >= rightMotor.getPower());
 			// calculate the degrees to turn
 			int degrs = (rotations * 360) + degrees;
+			// calculate the degrees to turn to
+			int lmetc = (power > 0) ? (lmstc + degrs) : (lmstc - degrs);
+			int rmetc = (power > 0) ? (rmstc + degrs) : (rmstc - degrs);
 			// log.fine("lmstc: " + lmstc + ", rmstc: " + rmstc + ", lal: " + (lal ? "L" :
 			// "R") + ", degrs: " + degrs);
 
 			// start motors
 			leftMotor.forward();
 			rightMotor.forward();
-			int lmtc = 0;
-			int rmtc = 0;
-			int lmtcd = 0;
-			int rmtcd = 0;
-			int pdg = degrs;
+
+			int lmtc = 0; // newest sample
+			int rmtc = 0; // newest sample
+			int pdg = degrs; // pending degrees
 
 			while (Button.ESCAPE.isUp()) {
-				// get pending degrees
 				if (lal) {
+					// get current degrees
 					lmtc = leftMotor.getTachoCount();
-					lmtcd = Math.abs(lmtc - lmstc);
-					pdg = lmtcd - degrs;
+					// get pending degrees to rotate
+					pdg = (power > 0) ? (lmetc - lmtc) : (lmtc - lmetc);
 				} else {
+					// get current degrees
 					rmtc = rightMotor.getTachoCount();
-					rmtcd = Math.abs(rmtc - rmstc);
-					pdg = rmtcd - degrs;
+					// get pending degrees to rotate
+					pdg = (power > 0) ? (rmetc - rmtc) : (rmtc - rmetc);
 				}
-				// log.fine("lmtc: " + lmtc + ", lmtcd: " + lmtcd + "; rmtc: " + rmtc + ",
-				// rmtcd: " + rmtcd + "; pdg: " + pdg);
+				// log.fine("lmtc: " + lmtc + "; rmtc: " + rmtc + "; pdg: " + pdg);
 
-				if (pdg >= 0) {
+				// check degrees reached
+				if (pdg <= 0) {
 					break;
 				}
 				// wait until motors have reached their number of degrees
-				if (pdg < 3) {
+				if (pdg < 10) {
 					// nearly done: just wait it out
 					Thread.yield();
 
 				} else {
-					// wait by sleeping
+					// wait by sleeping between samples
 					try {
 						Thread.sleep(1L);
 					} catch (InterruptedException e) {

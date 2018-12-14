@@ -10,7 +10,7 @@ import lejos.hardware.motor.UnregulatedMotor;
 import lejos.hardware.port.Port;
 
 /**
- * Medium Motor Block.
+ * Medium Motor and Motor Rotation Blocks.
  * 
  * @author Roland Blochberger
  * @see https://ev3-help-online.api.education.lego.com/Education/en-us/page.html?Path=blocks%2FLEGO%2FMediumMotor.html
@@ -20,8 +20,8 @@ public class MediumMotor {
 	// private static final Logger log =
 	// Logger.getLogger(MediumMotor.class.getName());
 
-	private Port motorPort;
-	private UnregulatedMotor motor;
+	private Port motorPort = null;
+	private UnregulatedMotor motor = null;
 
 	/**
 	 * Constructor.
@@ -32,15 +32,17 @@ public class MediumMotor {
 		this.motorPort = motorPort;
 		// instantiate the motor object
 		motor = new UnregulatedMotor(this.motorPort);
-		// handle resources correctly before exiting
-		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-			public void run() {
-				// stop the motor and wait until done
-				motor.stop();
-				// close resources
-				motor.close();
-			}
-		}));
+		if (motor != null) {
+			// handle resources correctly before exiting
+			Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+				public void run() {
+					// stop the motor and wait until done
+					motor.stop();
+					// close resources
+					motor.close();
+				}
+			}));
+		}
 	}
 
 	/**
@@ -70,6 +72,42 @@ public class MediumMotor {
 		Utl.waitTime(period);
 		// switch motor off
 		motorOff(brake);
+	}
+
+	/**
+	 * Motor Rotation Block: reset the motor's rotation to zero.
+	 */
+	public void rotationReset() {
+		motor.resetTachoCount();
+	}
+
+	/**
+	 * Motor Rotation Block: measure the current degrees turned since the last
+	 * reset.
+	 * 
+	 * @return the degrees.
+	 */
+	public int measureDegrees() {
+		return motor.getTachoCount();
+	}
+
+	/**
+	 * Motor Rotation Block: measure the number of rotations turned since the last
+	 * reset.
+	 * 
+	 * @return the rotations.
+	 */
+	public float measureRotations() {
+		return (motor.getTachoCount() / 360F);
+	}
+
+	/**
+	 * Motor Rotation Block: measure the current power level of the motor.
+	 * 
+	 * @return the current power level.
+	 */
+	public int measureCurrentPower() {
+		return motor.getPower();
 	}
 
 	/**
@@ -113,31 +151,34 @@ public class MediumMotor {
 			int mstc = motor.getTachoCount();
 			// calculate the degrees to turn
 			int degrs = (rotations * 360) + degrees;
-			//log.fine("mstc: " + mstc + ", degrs: " + degrs);
+			// calculate the degrees to turn to
+			int metc = (power > 0) ? (mstc + degrs) : (mstc - degrs);
+			// log.fine("mstc: " + mstc + ", degrs: " + degrs + ", metc: " + metc);
 
 			// start motor
 			motor.forward();
-			int mtc = 0;
-			int mtcd = 0;
-			int pdg = degrs;
+
+			int mtc = 0; // newest sample
+			int pdg = degrs; // pending degrees
 
 			while (Button.ESCAPE.isUp()) {
-				// get pending degrees
+				// get current degrees
 				mtc = motor.getTachoCount();
-				mtcd = Math.abs(mtc - mstc);
-				pdg = mtcd - degrs;
-				//log.fine("mtc: " + mtc + ", mtcd: " + mtcd + "; pdg: " + pdg);
+				// get pending degrees to rotate
+				pdg = (power > 0) ? (metc - mtc) : (mtc - metc);
+				// log.fine("mtc: " + mtc + "; pdg: " + pdg);
 
-				if (pdg >= 0) {
+				// check degrees reached
+				if (pdg <= 0) {
 					break;
 				}
 				// wait until motors have reached their number of degrees
-				if (pdg < 3) {
+				if (pdg < 10) {
 					// nearly done: just wait it out
 					Thread.yield();
 
 				} else {
-					// wait by sleeping
+					// wait by sleeping between samples
 					try {
 						Thread.sleep(1L);
 					} catch (InterruptedException e) {

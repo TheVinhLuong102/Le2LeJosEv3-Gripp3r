@@ -1,6 +1,6 @@
 # Lego2LeJosEv3-Gripp3r
 A LeJOS EV3 Implementation of _LEGO Mindstorms EV3 Programming Blocks (icons)_. This is the _Gripp3r Robot_ example.
-Please see the **Lego2LeJosEv3_Handbook** for more details.
+Please see the **Lego2LeJosEv3_Handbook** for more details. It is a LibreOffice Writer 6.0 document.
 
 The **Gripp3r Robot** is a standard example to learn how to program using the LEGO Programming Blocks based on LEGO's icon based (LabView-based) programming environment (Home Edition). You can download it at https://www.lego.com/en-us/mindstorms/downloads/download-software (or one of the other language pages).
 You can also find the building instructions of the Gripp3r robot at https://www.lego.com/en-us/mindstorms/build-a-robot/gripp3r (or one of the other language pages).

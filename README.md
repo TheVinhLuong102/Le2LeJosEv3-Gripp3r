@@ -6,7 +6,7 @@ The **Gripp3r Robot** is a standard example to learn how to program using the LE
 You can also find the building instructions of the Gripp3r robot at https://www.lego.com/en-us/mindstorms/build-a-robot/gripp3r (or one of the other language pages).
 
 ## Dependencies
-This project depends on the **LEGO 2 LeJOS EV3** Library (see https://github.com/robl0377/Lego2LeJosEv3) that sits on top of the current version of the LeJOS EV3 framework. Please copy the classes in the packages _lego2lejosev3.pblocks_ and _lego2lejosev3.logging_ into this project before running it.
+This project depends on the **LEGO 2 LeJOS EV3** Library (see https://github.com/robl0377/Lego2LeJosEv3) that sits on top of the current version of the LeJOS EV3 framework. Please copy the classes in the LEGO 2 LeJOS EV3 Library packages _lego2lejosev3.pblocks_ and _lego2lejosev3.logging_ into this project before running it.
 
 In this project I am using the **LeJOS EV3 v0.9.1beta** framework (see https://sourceforge.net/projects/ev3.lejos.p/) and a standard LEGO Mindstorms EV3 Brick.
 

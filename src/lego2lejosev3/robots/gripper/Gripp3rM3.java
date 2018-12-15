@@ -6,9 +6,10 @@ package lego2lejosev3.robots.gripper;
 import java.util.logging.Logger;
 
 import lego2lejosev3.logging.Setup;
-import lego2lejosev3.pblocks.CompareType;
 import lego2lejosev3.pblocks.InfraredSensor;
 import lego2lejosev3.pblocks.MoveSteering;
+import lego2lejosev3.pblocks.Utl;
+import lejos.hardware.Button;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.Port;
 import lejos.hardware.port.SensorPort;
@@ -46,17 +47,20 @@ public class Gripp3rM3 {
 		MoveSteering mst = new MoveSteering(leftMotorPort, rightMotorPort);
 		InfraredSensor irs = new InfraredSensor(irSensorPort);
 
-		// setup proximity sensor mode for the whole program
-		irs.setProximityMode();
-
 		// init the gripper
 		grp.initGripper();
 
 		// Run left & right motors forward
 		mst.motorsOn(0, 75);
 
-		// wait for infrared sensor detects proximity < 25cm
-		irs.waitCompare(CompareType.LESS, 25F);
+		// wait until infrared sensor detects proximity < 25cm
+		while (Button.ESCAPE.isUp()) {
+			if (irs.measureProximity() < 25F) {
+				break;
+			}
+			// wait between proximity measurements
+			Utl.waitTime(0.1F);
+		}
 
 		// stop left & right motors
 		mst.motorsOff(true);
@@ -72,7 +76,13 @@ public class Gripp3rM3 {
 		mst.motorsOn(0, 75);
 
 		// wait for infrared sensor detects proximity < 25cm
-		irs.waitCompare(CompareType.LESS, 25F);
+		while (Button.ESCAPE.isUp()) {
+			if (irs.measureProximity() < 25F) {
+				break;
+			}
+			// wait between proximity measurements
+			Utl.waitTime(0.1F);
+		}
 
 		// stop left & right motors
 		mst.motorsOff(true);

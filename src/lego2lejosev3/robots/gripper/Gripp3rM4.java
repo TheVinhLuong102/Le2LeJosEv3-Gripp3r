@@ -53,7 +53,7 @@ public class Gripp3rM4 {
 		// main loop
 		while (Button.ESCAPE.isUp()) {
 			// get the remote command code
-			remoteCode = irs.getRemoteCommand(REMOTE_CHANNEL);
+			remoteCode = irs.measureRemote(REMOTE_CHANNEL);
 			// check beacon on or off
 			if (remoteCode == InfraredSensor.BEACON) {
 				beacon = true;
@@ -68,11 +68,13 @@ public class Gripp3rM4 {
 						|| remoteCode == InfraredSensor.TOP_LEFT_BOTTOM_RIGHT) {
 					// left motor forward
 					left.motorOn(75);
+
 				} else {
 					if (remoteCode == InfraredSensor.BOTTOM_LEFT || remoteCode == InfraredSensor.TOP_RIGHT_BOTTOM_LEFT
 							|| remoteCode == InfraredSensor.BOTTOM_BOTH) {
 						// left motor backward
 						left.motorOn(-75);
+
 					} else {
 						// left motor stop without brake
 						left.motorOff(false);
@@ -82,11 +84,13 @@ public class Gripp3rM4 {
 						|| remoteCode == InfraredSensor.TOP_RIGHT_BOTTOM_LEFT) {
 					// right motor forward
 					right.motorOn(75);
+
 				} else {
 					if (remoteCode == InfraredSensor.BOTTOM_RIGHT || remoteCode == InfraredSensor.TOP_LEFT_BOTTOM_RIGHT
 							|| remoteCode == InfraredSensor.BOTTOM_BOTH) {
 						// right motor backward
 						right.motorOn(-75);
+
 					} else {
 						// right motor stop without brake
 						right.motorOff(false);
@@ -105,5 +109,4 @@ public class Gripp3rM4 {
 
 		log.fine("The End");
 	}
-
 }

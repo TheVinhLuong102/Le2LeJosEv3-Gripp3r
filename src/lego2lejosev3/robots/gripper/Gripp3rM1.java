@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import lego2lejosev3.logging.Setup;
 import lego2lejosev3.pblocks.MediumMotor;
 import lego2lejosev3.pblocks.Sound;
-import lego2lejosev3.pblocks.Utl;
+import lego2lejosev3.pblocks.Wait;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.Port;
 
@@ -47,7 +47,7 @@ public class Gripp3rM1 {
 		mot.motorOnForSeconds(100, 0.9F, true);
 
 		// Wait 1 second
-		Utl.waitTime(1F);
+		Wait.time(1F);
 
 		// play sound file once in background
 		Sound.playFile("airhiss2.wav", 100, Sound.ONCE);

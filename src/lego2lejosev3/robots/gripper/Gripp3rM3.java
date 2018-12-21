@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import lego2lejosev3.logging.Setup;
 import lego2lejosev3.pblocks.InfraredSensor;
 import lego2lejosev3.pblocks.MoveSteering;
-import lego2lejosev3.pblocks.Utl;
+import lego2lejosev3.pblocks.Wait;
 import lejos.hardware.Button;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.Port;
@@ -53,13 +53,13 @@ public class Gripp3rM3 {
 		// Run left & right motors forward
 		mst.motorsOn(0, 75);
 
-		// wait until infrared sensor detects proximity < 25cm
+		// wait until infrared sensor detects proximity < 25
 		while (Button.ESCAPE.isUp()) {
 			if (irs.measureProximity() < 25F) {
 				break;
 			}
 			// wait between proximity measurements
-			Utl.waitTime(0.1F);
+			Wait.time(0.1F);
 		}
 
 		// stop left & right motors
@@ -75,13 +75,13 @@ public class Gripp3rM3 {
 		// Run left & right motors forward
 		mst.motorsOn(0, 75);
 
-		// wait for infrared sensor detects proximity < 25cm
+		// wait for infrared sensor detects proximity < 25
 		while (Button.ESCAPE.isUp()) {
 			if (irs.measureProximity() < 25F) {
 				break;
 			}
 			// wait between proximity measurements
-			Utl.waitTime(0.1F);
+			Wait.time(0.1F);
 		}
 
 		// stop left & right motors

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package lego2lejosev3.robots.gripper;
+package le2lejosev3.robots.gripper;
 
 import java.util.logging.Logger;
 

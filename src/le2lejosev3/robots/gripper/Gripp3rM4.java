@@ -5,9 +5,9 @@ package le2lejosev3.robots.gripper;
 
 import java.util.logging.Logger;
 
-import lego2lejosev3.logging.Setup;
-import lego2lejosev3.pblocks.InfraredSensor;
-import lego2lejosev3.pblocks.LargeMotor;
+import le2lejosev3.logging.Setup;
+import le2lejosev3.pblocks.InfraredSensor;
+import le2lejosev3.pblocks.LargeMotor;
 import lejos.hardware.Button;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.Port;

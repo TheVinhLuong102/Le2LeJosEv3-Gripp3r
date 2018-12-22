@@ -5,10 +5,10 @@ package le2lejosev3.robots.gripper;
 
 import java.util.logging.Logger;
 
-import lego2lejosev3.logging.Setup;
-import lego2lejosev3.pblocks.MediumMotor;
-import lego2lejosev3.pblocks.Sound;
-import lego2lejosev3.pblocks.Wait;
+import le2lejosev3.logging.Setup;
+import le2lejosev3.pblocks.MediumMotor;
+import le2lejosev3.pblocks.Sound;
+import le2lejosev3.pblocks.Wait;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.Port;
 

@@ -3,8 +3,8 @@
  */
 package le2lejosev3.robots.gripper;
 
-import lego2lejosev3.pblocks.MediumMotor;
-import lego2lejosev3.pblocks.Sound;
+import le2lejosev3.pblocks.MediumMotor;
+import le2lejosev3.pblocks.Sound;
 import lejos.hardware.port.Port;
 
 /**

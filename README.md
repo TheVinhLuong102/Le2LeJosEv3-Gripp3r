@@ -10,7 +10,7 @@ Instead of the Touch Sensor, I use the top (beacon) button of the remote control
 
 ## Dependencies
 This project depends on the **Le2LeJosEv3** Library (see https://github.com/robl0377/Le2LeJosEv3) that sits on top of the current version of the LeJOS EV3 framework. 
-Please copy the classes in the _Le2LeJosEv3_ Library packages _le2lejosev3.pblocks_ and _le2lejosev3.logging_ into this project's source directory before running it.
+Please add the JAR file of the _Le2LeJosEv3_ Library _(le2lejosev3.jar)_ into this project's classpath before running it. The LeJOS Eclipse plugin will take care of the transfer of the library and the program JAR files to the EV3 brick..
 
 In this project I am using the **LeJOS EV3 v0.9.1beta** framework (see https://sourceforge.net/projects/ev3.lejos.p/) and a standard LEGOÂ® Mindstorms EV3 Brick.
 
